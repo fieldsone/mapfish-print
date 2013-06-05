@@ -39,20 +39,7 @@ dependencies {
 
   proguard 'net.sf.proguard:proguard:4.4'
 }
-
-def gitRevision() {
-	try {
-		def cmd = "git rev-parse HEAD"
-		def proc = cmd.execute()
-		return proc.getText()
-	} catch (Exception e) {
-		return "Error occurred while trying to execute git commandline tool: "+e
-	}
-}
-manifest.mainAttributes(
-	'Main-Class':'org.mapfish.print.ShellMapPrinter', 
-	'Build-Time': new Date().getDateTimeString(),
-	'git-revision': gitRevision())
+manifest.mainAttributes('Main-Class':'org.mapfish.print.ShellMapPrinter', 'Build-Time': new Date().getDateTimeString())
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -66,15 +53,11 @@ jar {
 
 war {
   baseName = "print-servlet"
-  manifest.mainAttributes(
-	'Build-Time': new Date().getDateTimeString(),
-	'git-revision': gitRevision())
+  manifest.mainAttributes('Build-Time': new Date().getDateTimeString())
 }
 task imageMagickWar (type: War) {
   baseName = "print-servlet"
-  manifest.mainAttributes(
-	'Build-Time': new Date().getDateTimeString(),
-	'git-revision': gitRevision())
+  manifest.mainAttributes('Build-Time': new Date().getDateTimeString())
   classifier = "IMG-MAGICK"
   from fileTree('sample-spring/imagemagick')
 }
@@ -155,7 +138,7 @@ task standaloneSourcesJar(type: Jar) {
 
 task show << {
 //    sourceSets.main.classes.asFileTree.each {println it}
-println gitRevision()
+println standaloneJavadocJar.properties
 }
 artifacts {
   archives jar, war, imageMagickWar, standalone, libSourcesJar, libJavadocJar, standaloneSourcesJar, standaloneJavadocJar
